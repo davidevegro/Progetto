@@ -1,4 +1,9 @@
-initSHA1(this);
+/* METEO.JS UTILIZZA IL FLUSSO OUATH 1.0 PER L'AUTENTICAZIONE DELL'UTENTE SU TWITTER, OTTIENE DALL'ENDPOINT TWITTER 
+https://api.twitter.com/1.1/account/verify_credentials.json L'INFORMAZIONE RELATIVA ALLA POSIZIONE DELL'UTENTE. CON UNA RICHIESTA ALLA API
+OPENWEATHERMAP OTTIENE LE PREVISIONI METEO DELLA CITTà DEI PROSSIMI 5 GIORNI, LE INFORMAZIONI OTTENUTE VERRANNO PASSATE AD UNA CODA DI MESSAGGI 
+TRAMITE RABBITMQ */
+
+
 var jsSHA = require("jssha");
 var oauthNonce = require("oauth_nonce");
 var express = require ('express');
@@ -9,7 +14,7 @@ var amqp = require('amqplib/callback_api');
 
 var app = express();
 var connect;
-
+initSHA1(this);
 
 app.use(session({ secret : 'omaewamoushindeirou',resave: false, saveUninitialized: true}));
 app.listen('8080',function(){
