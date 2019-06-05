@@ -1,3 +1,4 @@
+// Receive_meteo.js è un semplice consumer, riceve informazioni dal publisher e le stampa su shell
 var amqp = require('amqplib/callback_api');
 
 amqp.connect('amqp://localhost', function(error0, connection) {
