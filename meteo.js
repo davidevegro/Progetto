@@ -58,14 +58,15 @@ app.get('/connect', function(req, res){
 	var signature_base = "POST&"+url_enc+"&"+par_enc;
 	var secret_enc = encodeURIComponent("O6Cag4ATg4tDGzTGFVTPdp2dsRTenRyQrLWgQSp9pEsj49WJan");
 	var sign_key = secret_enc+"&";
+	//calcolo la signature key e la codifico con il metodo URL encoded
 	var hashedVal = calcHMAC(signature_base, sign_key);
 	var hash = encodeURIComponent(hashedVal);
 	
-	//fai stessa cosa per la richiesta dell'access token e per verify credentials https://developer.twitter.com/en/docs/basics/authentication/guides/creating-a-signature.html
+	//faccio la stessa cosa per la richiesta dell'access token e per verify credentials https://developer.twitter.com/en/docs/basics/authentication/guides/creating-a-signature.html
 	
 	
 	
-	
+	//costruisco la request POST per l'ottenimento del request token
 	var options = {
 		
 		hostname: "api.twitter.com",
@@ -99,20 +100,20 @@ app.get('/connect', function(req, res){
 			req.session.oAuthTokenSecret = tok.substring(59,91); //ottengo oauth token secret facendo substring della stringa che ottengo dalla callback di twitter 
 			console.log("ho ottenuto request_token : " + req.session.oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret);
 			console.log("---------------------------------------------------------");
-			
+			//reindirizzo per ottenere l'autorizzazione da parte dell'utente
 			res.redirect('https://api.twitter.com/oauth/authorize?oauth_token='+req.session.oauth_token);
 		});
 	});
 
 	request0.end();
-	//reindirizzo per ottenere l'autorizzazione
+	
 	
 });
 
- 
+// localhost:8080/get_access_token è la callback che abbiamo specificato per questa app nel service provider 
 app.get('/get_access_token',function(req,res){
 	
-	var oauth_ver = req.query.oauth_verifier;
+	var oauth_ver = req.query.oauth_verifier; 
 	var oauth_token = req.query.oauth_token;
 	var oauth_secret = req.session.oAuthTokenSecret;
 	console.log("request_token : " + req.query.oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret+ " ,ho ottenuto verifier_token : " +req.query.oauth_verifier);
@@ -162,12 +163,13 @@ app.get('/get_access_token',function(req,res){
 		resp.on("end", function() {
 			
 			
-			req.session.access = tok.substring(12,62); //OK
-			req.session.access_secret = tok.substring(82,127); //OK
+			req.session.access = tok.substring(12,62); 
+			req.session.access_secret = tok.substring(82,127); 
 			console.log("ho ottenuto access token : " + req.session.access + " e access secret : " + req.session.access_secret);
 			
 			
-			
+			//ora che ho ottenuto l'access token posso scambiarlo per accedere alle protected resources dell'utente
+			// prendo verify_credentials
 			//genero nonce 
 			oauthNonce( function( value ) {
 				return value;
@@ -246,7 +248,7 @@ app.get('/get_access_token',function(req,res){
 								hum = tempo.list[i].main.humidity;
 								weather = tempo.list[i].weather[0].description;
 								date = tempo.list[i].dt_txt;
-								var msg = "giorno ora : " + date + "\n"+ "condizioni meteo : " + weather + "\n" +"temperatura : "+temp+"\n"+"umidità :"+hum
+								var msg = "giorno ora : " + date + "\n"+ "condizioni meteo : " + weather + "\n" +"temperatura : "+temp+"\n"+"umidità :"+hum + "%"
 								
 								channel.publish(exchange,'meteo',Buffer.from(msg));
 								
@@ -280,7 +282,7 @@ app.get('/get_access_token',function(req,res){
 });
 	
 
-
+//per il calcolo dell'hash ho utilizzato una funzione esterna, link:
 function calcHMAC(input, inputKey) { //MUST place this function below the block of yucky code above
     //currently set up to take inputText and inputKey as text and give output as SHA-1 in base64
     //var inputText = 'stuff you want to convert'; //must be text, if you use Base64 or HEX then change hmacInputType on line 34
