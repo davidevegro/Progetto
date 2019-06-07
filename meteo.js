@@ -10,9 +10,9 @@ TRAMITE RABBITMQ. */
 var jsSHA = require("jssha");
 var oauthNonce = require("oauth_nonce");
 var express = require ('express');
-const http = require("https");
+var https = require("https");
 var session = require('express-session');
-const request = require('request');
+var request = require('request');
 var amqp = require('amqplib/callback_api');
 
 var app = express();
@@ -23,16 +23,11 @@ app.use(session({ secret : 'omaewamoushindeirou',resave: false, saveUninitialize
 app.listen('8080',function(){
 	console.log('listening on 8080');
 });
-var callbackURL= 'http://localhost:8080/get_access_token'
-
 
 amqp.connect('amqp://localhost', function(error0, connection) {
   if(error0){ throw error0; }
   connect=connection;
 });
-
-
-
 
 app.get('/',function(req,res){
 
@@ -86,11 +81,11 @@ app.get('/connect', function(req, res){
     };
 	
 	
-	req.session.oauth_token;
+	var oauth_token;
 	req.session.oAuthTokenSecret;
 	
 	
-	const request0 = http.request(options, function(resp) {
+	const request0 = https.request(options, function(resp) {
 		let tok = "";
 
 		resp.on("data", function(chunk) {
@@ -99,12 +94,12 @@ app.get('/connect', function(req, res){
 
 		resp.on("end", function() {
 			
-			req.session.oauth_token = tok.substring(12,39); //ottengo oauth token facendo substring della stringa che ottengo dalla callback di twitter (valori nelle substring fissi)
+			oauth_token = tok.substring(12,39); //ottengo oauth token facendo substring della stringa che ottengo dalla callback di twitter (valori nelle substring fissi)
 			req.session.oAuthTokenSecret = tok.substring(59,91); //ottengo oauth token secret facendo substring della stringa che ottengo dalla callback di twitter 
 			console.log("ho ottenuto request_token : " + req.session.oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret);
 			console.log("---------------------------------------------------------");
 			//reindirizzo per ottenere l'autorizzazione da parte dell'utente
-			res.redirect('https://api.twitter.com/oauth/authorize?oauth_token='+req.session.oauth_token);
+			res.redirect('https://api.twitter.com/oauth/authorize?oauth_token='+oauth_token);
 		});
 	});
 
@@ -174,9 +169,6 @@ app.get('/get_access_token',function(req,res){
 			//ora che ho ottenuto l'access token posso scambiarlo per accedere alle protected resources dell'utente
 			// prendo verify_credentials
 			//genero nonce 
-			oauthNonce( function( value ) {
-				return value;
-			});
 			var nonce1 = oauthNonce();
 			//genero timestamp
 			var timestamp1 = Math.floor(Date.now() / 1000);
@@ -211,7 +203,7 @@ app.get('/get_access_token',function(req,res){
 				
 			}
 				
-				const request2 = http.request(options2, function(response) {
+				const request2 = https.request(options2, function(response) {
 					let data = "" ;
 					
 					response.on("data", function(dati){
