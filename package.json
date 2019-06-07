@@ -1,7 +1,7 @@
 {
   "name": "progettorc",
   "version": "1.0.0",
-  "main": "meteo_definitivo.js",
+  "main": "meteo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,8 +13,6 @@
     "express": "^4.17.0",
     "express-session": "^1.16.1",
     "jssha": "^1.6.0",
-    "oauth": "^0.9.15",
-    "oauth-signature": "^1.5.0",
     "oauth_nonce": "^1.0.0",
     "request": "^2.88.0"
   }
