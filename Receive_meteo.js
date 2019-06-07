@@ -11,13 +11,12 @@ amqp.connect('amqp://localhost', function(error0, connection) {
     }
     var exchange = 'direct_logs';
 	channel.assertExchange(exchange, 'direct', {durable: true});
-	channel.assertQueue('', {
+	channel.assertQueue('weather', {
       exclusive: true
       }, function(error2, q) {
         if (error2) {
           throw error2;
         }
-      console.log(' [*] Waiting for logs. To exit press CTRL+C');
 	  channel.bindQueue(q.queue, exchange, 'meteo');
 	  channel.consume(q.queue,function(msg){
 		  console.log(msg.content.toString());
