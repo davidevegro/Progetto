@@ -1,7 +1,10 @@
 /* METEO.JS UTILIZZA IL FLUSSO OUATH 1.0 PER L'AUTENTICAZIONE DELL'UTENTE SU TWITTER, OTTIENE DALL'ENDPOINT TWITTER 
 https://api.twitter.com/1.1/account/verify_credentials.json L'INFORMAZIONE RELATIVA ALLA POSIZIONE DELL'UTENTE. CON UNA RICHIESTA ALLA API
 OPENWEATHERMAP OTTIENE LE PREVISIONI METEO DELLA CITTà DEI PROSSIMI 5 GIORNI, LE INFORMAZIONI OTTENUTE VERRANNO PASSATE AD UNA CODA DI MESSAGGI 
-TRAMITE RABBITMQ */
+TRAMITE RABBITMQ. */
+
+
+/* Per il calcolo della oauth signature ho usato una funzione esterna https://gist.github.com/yajd/9103325 */
 
 
 var jsSHA = require("jssha");
@@ -282,7 +285,7 @@ app.get('/get_access_token',function(req,res){
 });
 	
 
-//per il calcolo dell'hash ho utilizzato una funzione esterna, link: https://gist.github.com/yajd/9103325
+
 function calcHMAC(input, inputKey) { //MUST place this function below the block of yucky code above
     //currently set up to take inputText and inputKey as text and give output as SHA-1 in base64
     //var inputText = 'stuff you want to convert'; //must be text, if you use Base64 or HEX then change hmacInputType on line 34
