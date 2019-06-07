@@ -282,7 +282,7 @@ app.get('/get_access_token',function(req,res){
 });
 	
 
-//per il calcolo dell'hash ho utilizzato una funzione esterna, link: `http://caligatio.github.com/jsSHA/`
+//per il calcolo dell'hash ho utilizzato una funzione esterna, link: https://gist.github.com/yajd/9103325
 function calcHMAC(input, inputKey) { //MUST place this function below the block of yucky code above
     //currently set up to take inputText and inputKey as text and give output as SHA-1 in base64
     //var inputText = 'stuff you want to convert'; //must be text, if you use Base64 or HEX then change hmacInputType on line 34
