@@ -96,7 +96,7 @@ app.get('/connect', function(req, res){
 			
 			oauth_token = tok.substring(12,39); //ottengo oauth token facendo substring della stringa che ottengo dalla callback di twitter (valori nelle substring fissi)
 			req.session.oAuthTokenSecret = tok.substring(59,91); //ottengo oauth token secret facendo substring della stringa che ottengo dalla callback di twitter 
-			console.log("ho ottenuto request_token : " + req.session.oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret);
+			console.log("ho ottenuto request_token : " + oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret);
 			console.log("---------------------------------------------------------");
 			//reindirizzo per ottenere l'autorizzazione da parte dell'utente
 			res.redirect('https://api.twitter.com/oauth/authorize?oauth_token='+oauth_token);
@@ -161,9 +161,9 @@ app.get('/get_access_token',function(req,res){
 		resp.on("end", function() {
 			
 			
-			req.session.access = tok.substring(12,62); 
-			req.session.access_secret = tok.substring(82,127); 
-			console.log("ho ottenuto access token : " + req.session.access + " e access secret : " + req.session.access_secret);
+			var access = tok.substring(12,62); 
+			var access_secret = tok.substring(82,127); 
+			console.log("ho ottenuto access token : " + access + " e access secret : " + access_secret);
 			
 			
 			//ora che ho ottenuto l'access token posso scambiarlo per accedere alle protected resources dell'utente
@@ -196,7 +196,7 @@ app.get('/get_access_token',function(req,res){
 				path: "/1.1/account/verify_credentials.json",
 				
 				"headers": {
-					"authorization": `OAuth realm="https://api.twitter.com/1.1/account/verify_credentials.json",oauth_consumer_key="9YL3Ua7oSfNlk8mdm2vlbcZ7v",oauth_nonce=`+nonce1+`,oauth_signature=`+hash1+`,oauth_signature_method="HMAC-SHA1",oauth_timestamp=`+timestamp1+`,oauth_token=`+req.session.access+`,oauth_version="1.0"`,
+					"authorization": `OAuth realm="https://api.twitter.com/1.1/account/verify_credentials.json",oauth_consumer_key="9YL3Ua7oSfNlk8mdm2vlbcZ7v",oauth_nonce=`+nonce1+`,oauth_signature=`+hash1+`,oauth_signature_method="HMAC-SHA1",oauth_timestamp=`+timestamp1+`,oauth_token=`+access+`,oauth_version="1.0"`,
 					
 				}
 				
