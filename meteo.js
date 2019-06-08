@@ -96,7 +96,7 @@ app.get('/connect', function(req, res){
 			
 			oauth_token = tok.substring(12,39); //ottengo oauth token facendo substring della stringa che ottengo dalla callback di twitter (valori nelle substring fissi)
 			req.session.oAuthTokenSecret = tok.substring(59,91); //ottengo oauth token secret facendo substring della stringa che ottengo dalla callback di twitter 
-			console.log("ho ottenuto request_token : " + req.session.oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret);
+			console.log("ho ottenuto request_token : " + oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret);
 			console.log("---------------------------------------------------------");
 			//reindirizzo per ottenere l'autorizzazione da parte dell'utente
 			res.redirect('https://api.twitter.com/oauth/authorize?oauth_token='+oauth_token);
