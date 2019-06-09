@@ -19,7 +19,7 @@ var app = express();
 var connect;
 initSHA1(this);
 
-app.use(session({ secret : 'omaewamoushindeirou',resave: false, saveUninitialized: true}));
+app.use(session({ secret : 'apprc',resave: false, saveUninitialized: true}));
 app.listen('8080',function(){
 	console.log('listening on 8080');
 });
