@@ -23,7 +23,7 @@ oauth_token='+oauth_token` al fine di ottenere la sua autorizzazione per il nost
 Autorizzato il token,l'utente viene reindirizzato dal service provider verso la callback URI dell'applicazione 
 (http://localhost:8080/get_access_token).
 
-Entra in gioco ora la seconda API `app.get('/get_access_token',function(req,res){...}`, nella URL dopo il reinidirizzamento verso la 
+Entra in gioco ora la seconda funzione `app.get('/get_access_token',function(req,res){...}`, nella URL dopo il reinidirizzamento verso la 
 callback è possibile ricavare un nuovo token(`oauth_ver`) necessario per guadagnare l'access token tramite l'endpoint Twitter 
 https://api.twitter.com/oauth/access_token?oauth_verifier=, ora è possibile accedere alle risorse dell'utente usando l'access 
 token(`req.session.access`) e l'access token secret(`req.session.access_secret`) appena ricevuto, con la chiamata verso 
