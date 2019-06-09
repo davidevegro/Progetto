@@ -19,8 +19,8 @@ il calcolo dell'HMAC-SHA1,quest'ultimo definito da una funzione esterna:
 https://gist.github.com/yajd/9103325
 
 Una volta ricavato il request token è possibile reindirizzare l'utente sull'endpoint twitter `https://api.twitter.com/oauth/authorize?
-oauth_token='+oauth_token` al fine di ottenere la sua autorizzazione per il nostro token. 
-Autorizzato il token,l'utente viene reindirizzato dal service provider verso la callback URI dell'applicazione 
+oauth_token='+oauth_token` al fine di ottenere un token authorized. 
+Autorizzata l'app,l'utente viene reindirizzato dal service provider verso la callback URI dell'applicazione 
 (http://localhost:8080/get_access_token).
 
 Entra in gioco ora la seconda funzione `app.get('/get_access_token',function(req,res){...}`, nella URL dopo il reinidirizzamento verso la 
@@ -28,7 +28,7 @@ callback è possibile ricavare un nuovo token(`oauth_ver`) necessario per guadag
 https://api.twitter.com/oauth/access_token?oauth_verifier=, ora è possibile accedere alle risorse dell'utente usando l'access 
 token(`req.session.access`) e l'access token secret(`req.session.access_secret`) appena ricevuto, con la chiamata verso 
 https://api.twitter.com/1.1/account/verify_credentials.json è possibile ottenere informazioni in formato JSON riguardo l'utente,tra 
-queste prendiamo la proprietà `location`. Otteniamo ora le previsioni meteo per i prossimi 5 giorni facendo una GET alla API Openweathermap e le inviamo tramite l'exchange `direct_logs` alla coda `meteo`. 
+queste prendiamo il valore `location`. Otteniamo ora le previsioni meteo per i prossimi 5 giorni facendo una GET alla API Openweathermap e le inviamo tramite l'exchange `direct_logs` alla coda `meteo`. 
 
 L'applicazione `Receive_meteo.js` implementa un consumatore, crea la coda `meteo`,che viene bindata all'exchange `direct_logs` , ottiene i messaggi dal publisher e li stampa su console.
 
