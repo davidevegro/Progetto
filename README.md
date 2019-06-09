@@ -19,7 +19,7 @@ il calcolo dell'HMAC-SHA1,quest'ultimo definito da una funzione esterna:
 https://gist.github.com/yajd/9103325
 
 Una volta ricavato il request token è possibile reindirizzare l'utente sull'endpoint twitter `https://api.twitter.com/oauth/authorize?
-oauth_token='+req.session.oauth_token` al fine di ottenere la sua autorizzazione per il nostro token. 
+oauth_token='+oauth_token` al fine di ottenere la sua autorizzazione per il nostro token. 
 Autorizzato il token,l'utente viene reindirizzato dal service provider verso la callback URI dell'applicazione 
 (http://localhost:8080/get_access_token).
 
