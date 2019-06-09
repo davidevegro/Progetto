@@ -24,6 +24,7 @@ app.listen('8080',function(){
 	console.log('listening on 8080');
 });
 
+// mi connetto al server rabbitmq
 amqp.connect('amqp://localhost', function(error0, connection) {
   if(error0){ throw error0; }
   connect=connection;
@@ -94,8 +95,8 @@ app.get('/connect', function(req, res){
 
 		resp.on("end", function() {
 			
-			oauth_token = tok.substring(12,39); //ottengo oauth token facendo substring della stringa che ottengo dalla callback di twitter (valori nelle substring fissi)
-			req.session.oAuthTokenSecret = tok.substring(59,91); //ottengo oauth token secret facendo substring della stringa che ottengo dalla callback di twitter 
+			oauth_token = tok.substring(12,39); //pattern per ottenere i token è fisso
+			req.session.oAuthTokenSecret = tok.substring(59,91); //pattern per ottenere i token è fisso
 			console.log("ho ottenuto request_token : " + oauth_token + " ,request_token_secret : " + req.session.oAuthTokenSecret);
 			console.log("---------------------------------------------------------");
 			//reindirizzo per ottenere l'autorizzazione da parte dell'utente
@@ -215,7 +216,7 @@ app.get('/get_access_token',function(req,res){
 					console.log("inviando meteo per "+credenziali.location+" a coda");
 					res.send("inviato meteo a Receive_meteo");
 						
-					//ho ottenuto la città ora chiamo la API OPENWEATHERMAP e trasferisco le info a rabbitmq;
+					//ho ottenuto la città ora chiamo la API OPENWEATHERMAP e trasferisco le info all'exchange direct_logs;
 					let url = "https://api.openweathermap.org/data/2.5/forecast?q="+credenziali.location+"&appid=21936a2c54dddc884faf7609c8fa27b6&units=metric";
 					request(url,function(err,response,body) {
 								
@@ -253,6 +254,7 @@ app.get('/get_access_token',function(req,res){
 });
 	
 
+//https://gist.github.com/yajd/9103325
 
 function calcHMAC(input, inputKey) { //MUST place this function below the block of yucky code above
     //currently set up to take inputText and inputKey as text and give output as SHA-1 in base64
