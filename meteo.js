@@ -108,8 +108,9 @@ app.get('/connect', function(req, res){
 });
 
 // localhost:8080/get_access_token è la callback che abbiamo specificato per questa app nel service provider 
-app.get('/get_access_token',function(req,res){
-	
+
+app.get('/get_access_token',function(req,res){ //ottengo access token e invio una GET alla API Openweathermap
+		
 	var oauth_ver = req.query.oauth_verifier; 
 	var oauth_token = req.query.oauth_token;
 	var oauth_secret = req.session.oAuthTokenSecret;
